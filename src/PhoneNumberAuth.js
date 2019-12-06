@@ -57,9 +57,8 @@ class PhoneNumberAuth extends Component {
     });
   }
 
-
-
   render() {
+    console.log(firebase.auth().currentUser)
     return (
       <React.Fragment>
         <div style={{textAlign: "center",marginTop: "20px"}}>
