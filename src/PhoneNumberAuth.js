@@ -1,24 +1,18 @@
-import React, { Component } from 'react';
-import firebase from './firebase/firebase'
+import React, { useState,useEffect } from 'react'
+import Button from '@material-ui/core/Button'
 import TextField from '@material-ui/core/TextField';
-import Button from '@material-ui/core/Button';
+import firebase from './firebase/firebase'
 
-class PhoneNumberAuth extends Component {
-  constructor(){
-    super()
-    this.SubmitPhoneNumber = this.SubmitPhoneNumber.bind(this)
-    this.SubmitSecretNumber = this.SubmitSecretNumber.bind(this)
-    this.OnChangePhoneNumber = this.OnChangePhoneNumber.bind(this)
-    this.OnChangeSecretNumber = this.OnChangeSecretNumber.bind(this)
-    this.state={
-      confirmationResult: null,
-      phoneNumber: "",
-      secretNumber: "",
-      displayAfterPhoneNumberSubmit: null,
-    }
-  }
+const PhoneNumberAuth = () => {
+  const [confirmationResult,setConfirmationResult ] = useState('')
+  const [phoneNumber, setPhoneNumber] = useState('')
+  const [secretNumber, setSecretNumber] = useState('')
+  const [displayAfterPhoneNumberSubmit, setDisplayAfterPhoneNumberSubmit] = useState('')
+  useEffect(() => {
+    doRecaptcha();
+  },[])
 
-  componentDidMount(){
+  const doRecaptcha = () => {
     firebase.auth().languageCode = 'jp';
     window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier('sign-in-button', {
       'size': 'invisible',
@@ -28,69 +22,48 @@ class PhoneNumberAuth extends Component {
       }
     });
   }
-  
 
-  async SubmitPhoneNumber(){
-    const phoneNumber = this.state.phoneNumber
+  const SubmitPhoneNumber = () => {
     const appVerifier = window.recaptchaVerifier;
-    const confirmationResult = await firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
-    this.setState({confirmationResult: confirmationResult,displayAfterPhoneNumberSubmit: true})
+    const result = firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
+    setConfirmationResult(result)
+    setDisplayAfterPhoneNumberSubmit(true)
   }
 
-  async SubmitSecretNumber(){
-    const secretNumber = this.state.secretNumber
-    const credential = await firebase.auth.PhoneAuthProvider.credential(this.state.confirmationResult.verificationId, secretNumber);
-    await firebase.auth().currentUser.linkAndRetrieveDataWithCredential(credential)
+  const SubmitSecretNumber = () => {
+    const credential = firebase.auth.PhoneAuthProvider.credential(confirmationResult.verificationId, secretNumber);
+    firebase.auth().currentUser.linkAndRetrieveDataWithCredential(credential)
   }
 
-  OnChangePhoneNumber(e) {
-    e.preventDefault();
-    this.setState({
-      phoneNumber: "+81"+e.target.value
-    });
-  }
-
-  OnChangeSecretNumber(e) {
-    e.preventDefault();
-    this.setState({
-       secretNumber: e.target.value
-    });
-  }
-
-  render() {
-    console.log(firebase.auth().currentUser)
-    return (
-      <React.Fragment>
-        <div style={{textAlign: "center",marginTop: "20px"}}>
-          <div id="recaptcha-container">
-            <TextField
+  return (
+    <>
+      <div style={{textAlign: "center",marginTop: "20px"}}>
+        <div id="recaptcha-container">
+          <TextField
             style={{width: "200px"}}
-            onChange={this.OnChangePhoneNumber}
+            onChange={(e) => setPhoneNumber('+81'+e.target.value)}
             placeholder="電話番号を入力"
-            />
-            <br/><br/>
-            <Button variant="contained" color="primary" id="sign-in-button" onClick={this.SubmitPhoneNumber} style={{width: "200px"}}>
-              秘密番号を送信
-            </Button>
-          </div>
+          />
           <br/><br/>
-          <div style={{ display: this.state.displayAfterPhoneNumberSubmit ? '' : 'none' }}>
-            <TextField
-              onChange={this.OnChangeSecretNumber}
-              style={{width: "200px"}}
-              placeholder="6桁の秘密番号を入力してください。"
-            />
-            <br/><br/>
-            <Button variant="contained" color="primary" id="sign-in-button" onClick={this.SubmitSecretNumber} style={{width: "200px"}}>
-              認証
-            </Button>
-          </div>
+          <Button variant="contained" color="primary" id="sign-in-button" onClick={SubmitPhoneNumber} style={{width: "200px"}}>
+            秘密番号を送信
+          </Button>
         </div>
-      </React.Fragment>
-    )
-  }
+        <br/><br/>
+        <div style={{ display: displayAfterPhoneNumberSubmit ? '' : 'none' }}>
+          <TextField
+            onChange={(e) => {setSecretNumber(e.target.value)}}
+            style={{width: "200px"}}
+            placeholder="6桁の秘密番号を入力してください。"
+          />
+          <br/><br/>
+          <Button variant="contained" color="primary" id="sign-in-button" onClick={SubmitSecretNumber} style={{width: "200px"}}>
+            認証
+          </Button>
+        </div>
+      </div>
+    </>
+  )
 }
 
-
 export default PhoneNumberAuth
-
