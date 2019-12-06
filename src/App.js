@@ -3,16 +3,13 @@ import './App.css';
 import GoogleAuth from "./GoogleAuth"
 import PhoneNumberAuth from "./PhoneNumberAuth"
 
-function App() {
+const App = () => {
   return (
-    <div>
+    <>
       <GoogleAuth />
       <PhoneNumberAuth />
-    </div>
+    </>
   );
 }
 
 export default App;
-
-
-
