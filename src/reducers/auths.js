@@ -1,7 +1,6 @@
 import {
   GOOGLE_AUTH,
   PHONE_AUTH,
-  CURRENT_USER 
 } from '../actions'
 
 const auths = (state = [], action) => {
@@ -9,8 +8,6 @@ const auths = (state = [], action) => {
     case GOOGLE_AUTH:
       return []
     case PHONE_AUTH:
-      return []
-    case CURRENT_USER:
       return []
     default:
       return state
