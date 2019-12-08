@@ -1,11 +1,13 @@
-import React from 'react'
-import Button from '@material-ui/core/Button'
-import firebase from './firebase/firebase'
+import React from 'react';
+import { useDispatch } from 'react-redux';
+import { googleAuth } from "../actions"
+
+import Button from '@material-ui/core/Button';
 
 const GoogleAuth = () => {
+  const dispatch = useDispatch()
   const SubmitGoogleAuth = () => {
-    const provider =  new firebase.auth.GoogleAuthProvider();
-    firebase.auth().signInWithPopup(provider)
+    dispatch(googleAuth())
   }
 
   return (
