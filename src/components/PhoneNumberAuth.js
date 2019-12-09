@@ -1,13 +1,14 @@
-import React, { useState,useEffect } from 'react'
-import Button from '@material-ui/core/Button'
+import React, { useState,useEffect } from 'react';
+import { useDispatch } from 'react-redux';
+import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import { phoneNumberConfirm } from "../actions";
 import firebase from '../firebase/firebase';
 
 const PhoneNumberAuth = () => {
-  const [confirmationResult,setConfirmationResult ] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [secretNumber, setSecretNumber] = useState('')
-  const [displayAfterPhoneNumberSubmit, setDisplayAfterPhoneNumberSubmit] = useState('')
+  const dispatch = useDispatch()
   useEffect(() => {
     doRecaptcha();
   },[])
@@ -25,19 +26,18 @@ const PhoneNumberAuth = () => {
 
   const SubmitPhoneNumber = () => {
     const appVerifier = window.recaptchaVerifier;
-    const result = firebase.auth().signInWithPhoneNumber(phoneNumber, appVerifier)
-    setConfirmationResult(result)
-    setDisplayAfterPhoneNumberSubmit(true)
+    phoneNumberConfirm(phoneNumber,appVerifier,dispatch)
   }
 
   const SubmitSecretNumber = () => {
-    const credential = firebase.auth.PhoneAuthProvider.credential(confirmationResult.verificationId, secretNumber);
-    firebase.auth().currentUser.linkAndRetrieveDataWithCredential(credential)
+    // const credential = firebase.auth.PhoneAuthProvider.credential(confirmationResult.verificationId, secretNumber);
+    // firebase.auth().currentUser.linkAndRetrieveDataWithCredential(credential)
   }
 
   return (
     <>
       <div style={{textAlign: "center",marginTop: "20px"}}>
+        <p>googleログインしました。電話番号で認証してください</p>
         <div id="recaptcha-container">
           <TextField
             style={{width: "200px"}}
@@ -50,7 +50,7 @@ const PhoneNumberAuth = () => {
           </Button>
         </div>
         <br/><br/>
-        <div style={{ display: displayAfterPhoneNumberSubmit ? '' : 'none' }}>
+        <div> {/* style={{ display: displayAfterPhoneNumberSubmit ? '' : 'none' }} */}
           <TextField
             onChange={(e) => {setSecretNumber(e.target.value)}}
             style={{width: "200px"}}

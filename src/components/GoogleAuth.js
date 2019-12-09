@@ -1,13 +1,13 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { googleAuth } from "../actions"
+import { googleAuth } from "../actions";
 
 import Button from '@material-ui/core/Button';
 
 const GoogleAuth = () => {
   const dispatch = useDispatch()
   const SubmitGoogleAuth = () => {
-    dispatch(googleAuth())
+    googleAuth(dispatch)
   }
 
   return (
