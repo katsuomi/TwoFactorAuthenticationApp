@@ -1,13 +1,17 @@
 import React, { useState,useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { phoneNumberConfirm } from "../actions";
+import { phoneNumberConfirm,phoneNumberAuth } from "../actions";
 import firebase from '../firebase/firebase';
 
 const PhoneNumberAuth = () => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [secretNumber, setSecretNumber] = useState('')
+  const phone_number_confirmation = useSelector(state => state.phoneNumberConfirms.phone_number_confirmation)
+  const current_user = useSelector(state => state.auths.current_user)
+  const isSubmitPhoneNumber = phone_number_confirmation.verificationId === undefined ? false : true
+  const isPhoneNumberAuth = current_user.phoneNumber === null ? false : true
   const dispatch = useDispatch()
   useEffect(() => {
     doRecaptcha();
@@ -30,13 +34,13 @@ const PhoneNumberAuth = () => {
   }
 
   const SubmitSecretNumber = () => {
-    // const credential = firebase.auth.PhoneAuthProvider.credential(confirmationResult.verificationId, secretNumber);
-    // firebase.auth().currentUser.linkAndRetrieveDataWithCredential(credential)
+    phoneNumberAuth(phone_number_confirmation.verificationId,secretNumber,dispatch)
   }
 
   return (
     <>
       <div style={{textAlign: "center",marginTop: "20px"}}>
+        {/* <p style={{ display: isPhoneNumberAuth ? '' : 'none' }}>電話番号が登録されました。</p> */}
         <p>googleログインしました。電話番号で認証してください</p>
         <div id="recaptcha-container">
           <TextField
@@ -50,7 +54,7 @@ const PhoneNumberAuth = () => {
           </Button>
         </div>
         <br/><br/>
-        <div> {/* style={{ display: displayAfterPhoneNumberSubmit ? '' : 'none' }} */}
+        <div style={{ display: isSubmitPhoneNumber ? '' : 'none' }}>
           <TextField
             onChange={(e) => {setSecretNumber(e.target.value)}}
             style={{width: "200px"}}
