@@ -7,7 +7,7 @@ import Button from '@material-ui/core/Button';
 const GetProfile = () => {
   const dispatch = useDispatch()
   const SubmitGoogleAuth = () => {
-    getProfileString(dispatch)
+    getProfile(dispatch)
   }
 
   return (
