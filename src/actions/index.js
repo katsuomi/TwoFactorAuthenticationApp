@@ -1,7 +1,26 @@
 import firebase from '../firebase/firebase';
 
 export const AUTH = 'AUTH';
+export const PROFILE = 'PROFILE';
 export const PHONE_NUMBER_CONFIRM = 'PHONE_NUMBER_CONFIRM';
+
+
+export const getProfile = (dispatch) => {
+  let profile = {name: "aoki"}
+  dispatch({
+    type: PROFILE,
+    profile
+  })
+}
+
+export const getNextProfile = (dispatch) => {
+  let profile = {name: "aoki"}
+  let profile = {name: "aoki"}
+  dispatch({
+    type: PROFILE,
+    profile
+  })
+}
 
 export const googleAuth = (dispatch) => {
   const provider =  new firebase.auth.GoogleAuthProvider();

@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
 import App from './components/App';
+import Bug from './components/Bug';
 import * as serviceWorker from './serviceWorker';
 import reducer from './reducers';
 import { createStore } from 'redux';
@@ -10,7 +11,7 @@ const store = createStore(reducer);
 
 ReactDOM.render(
   <Provider store={store}>
-    <App />
+    <Bug />
   </Provider>,
   document.getElementById('root')
 );
