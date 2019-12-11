@@ -1,23 +1,45 @@
 import firebase from '../firebase/firebase';
-
+import axios from 'axios';
+const QIITA_ROOT_URL = "https://qiita.com/api/v2";
 export const AUTH = 'AUTH';
 export const PROFILE = 'PROFILE';
+export const DESCRIPTION = 'DESCRIPTION';
+export const PROFILENEXT = 'PROFILENEXT';
 export const PHONE_NUMBER_CONFIRM = 'PHONE_NUMBER_CONFIRM';
 
 
-export const getProfile = (dispatch) => {
+export const getProfile = async (dispatch) => {
   let profile = {name: "aoki"}
-  dispatch({
-    type: PROFILE,
-    profile
+  await axios.get(`${QIITA_ROOT_URL}/users/katsuomi`)
+  .then((response) => {    
+    profile.description = response.data.description
+    dispatch({
+      type: PROFILE,
+      profile
+    })
+  })
+  .catch((data) => {
+  })
+}
+
+export const getProfileString = async (dispatch) => {
+  await axios.get(`${QIITA_ROOT_URL}/users/katsuomi`)
+  .then((response) => {    
+    const description = response.data.description
+    dispatch({
+      type: DESCRIPTION,
+      description
+    })
+  })
+  .catch((data) => {
   })
 }
 
 export const getNextProfile = (dispatch) => {
   let profile = {name: "aoki"}
-  let profile = {name: "aoki"}
+  profile.password = "password"
   dispatch({
-    type: PROFILE,
+    type: PROFILENEXT,
     profile
   })
 }

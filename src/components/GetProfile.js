@@ -1,13 +1,13 @@
 import React from 'react';
 import { useDispatch } from 'react-redux';
-import { getProfile } from "../actions";
+import { getProfile,getProfileString } from "../actions";
 
 import Button from '@material-ui/core/Button';
 
 const GetProfile = () => {
   const dispatch = useDispatch()
   const SubmitGoogleAuth = () => {
-    getProfile(dispatch)
+    getProfileString(dispatch)
   }
 
   return (

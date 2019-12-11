@@ -1,9 +1,10 @@
 import {
-  PROFILE,
+  PROFILE,PROFILENEXT,DESCRIPTION
 } from '../actions';
 
 const initialState = { 
-  profile: {}
+  profile: {},
+  description: ""
 }
 
 const profiles = (state = initialState, action) => {
@@ -11,6 +12,15 @@ const profiles = (state = initialState, action) => {
     case PROFILE:
       return {
         profile: action.profile
+      }
+    case PROFILENEXT:
+      return {
+        profile: action.profile
+      }
+    case DESCRIPTION:
+      return {
+        description: action.description,
+        profile: {}
       }
     default:
       return state
