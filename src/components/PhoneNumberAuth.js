@@ -1,18 +1,18 @@
 import React, { useState,useEffect } from 'react';
-import { useDispatch,useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useActions } from "../actions";
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
-import { phoneNumberConfirm,phoneNumberAuth } from "../actions";
 import firebase from '../firebase/firebase';
 
 const PhoneNumberAuth = () => {
   const [phoneNumber, setPhoneNumber] = useState('')
   const [secretNumber, setSecretNumber] = useState('')
+  const [ _,phoneNumberConfirm,phoneNumberAuth ] = useActions()
   const phone_number_confirmation = useSelector(state => state.phoneNumberConfirms.phone_number_confirmation)
   const current_user = useSelector(state => state.auths.current_user)
   const isSubmitPhoneNumber = phone_number_confirmation.verificationId === undefined ? false : true
   const isPhoneNumberAuth = current_user.phoneNumber === null ? false : true
-  const dispatch = useDispatch()
   useEffect(() => {
     doRecaptcha();
   },[])
@@ -30,11 +30,11 @@ const PhoneNumberAuth = () => {
 
   const SubmitPhoneNumber = () => {
     const appVerifier = window.recaptchaVerifier;
-    phoneNumberConfirm(phoneNumber,appVerifier,dispatch)
+    phoneNumberConfirm(phoneNumber,appVerifier)
   }
 
   const SubmitSecretNumber = () => {
-    phoneNumberAuth(phone_number_confirmation.verificationId,secretNumber,dispatch)
+    phoneNumberAuth(phone_number_confirmation.verificationId,secretNumber)
   }
 
   return (
