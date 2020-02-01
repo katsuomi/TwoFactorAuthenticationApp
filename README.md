@@ -1,6 +1,6 @@
 # TwoFactorAuthenticationApp
 
-this repository is for [this Qiita's article](https://qiita.com/katsuomi/items/9a5173adbcb705b737a4)
+This repository is for [this Qiita's article](https://qiita.com/katsuomi/items/9a5173adbcb705b737a4)
 
 
 ## ✍️About
