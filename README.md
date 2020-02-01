@@ -1,5 +1,8 @@
 # TwoFactorAuthenticationApp
 
+this repository is for [this Qiita's article](https://qiita.com/katsuomi/items/9a5173adbcb705b737a4)
+
+
 ## ✍️About
 This app performs two-factor authentication using firebase Auth.
 
